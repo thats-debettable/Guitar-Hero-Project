@@ -1,6 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.*;
 
 /*****************************************************************************
  * Sean and Chris
@@ -9,17 +9,72 @@ import java.util.Scanner;
 
 public class GuitarHeroLite {
 	
-	static String[] notes;
+	static ArrayList<fallingLetters> notes;
+	static noteCircle nc;
+	static Map<String, Double> loc;
 	static int count = 0;
 
     public static void main(String[] args) throws FileNotFoundException {
 
         // Create two guitar strings, for concert A and C
-    	notes = new String[62];
+    	loc = new HashMap<>();
+    	loc.put("C", .125);
+    	loc.put("C#", .1875);
+    	loc.put("D", .25);
+    	loc.put("Ef", .3125);
+    	loc.put("E", .375);
+    	loc.put("F", .5);
+    	loc.put("F#", .5625);
+    	loc.put("G", .625);
+    	loc.put("Af", .6875);
+    	loc.put("A", .75);
+    	loc.put("Bf", .8125);
+    	loc.put("B", .875);
+    	loc.put("C", 1.0);
+    	
+    	notes = new ArrayList<>();
     	Scanner file = new Scanner(new File("swth.in"));
-    	for(int x = 0; x < notes.length; x++)
+    	while(file.hasNext())
     	{
-    		notes[x] = file.nextLine();
+    		String temp = file.nextLine();
+    		notes.add(new fallingLetters(temp, loc.get(temp)));
+    	}
+    	
+    	for(int x = 1; x < notes.size(); x++)
+    	{
+    		String temp = notes.get(x).getNote();
+    		if(temp.equals("C"))
+    			notes.get(x).setNote("A");
+    		if(temp.equals("C#"))
+    			notes.get(x).setNote("W");
+    		if(temp.equals("D"))
+    			notes.get(x).setNote("S");
+    		if(temp.equals("Ef"))
+    			notes.get(x).setNote("E");
+    		if(temp.equals("E"))
+    			notes.get(x).setNote("D");
+    		if(temp.equals("F"))
+    			notes.get(x).setNote("F");
+    		if(temp.equals("F#"))
+    			notes.get(x).setNote("T");
+    		if(temp.equals("G"))
+    			notes.get(x).setNote("G");
+    		if(temp.equals("Af"))
+    			notes.get(x).setNote("Y");
+    		if(temp.equals("A"))
+    			notes.get(x).setNote("H");
+    		if(temp.equals("Bf"))
+    			notes.get(x).setNote("U");
+    		if(temp.equals("B"))
+    			notes.get(x).setNote("J");
+    		if(temp.equals("CUP"))
+    			notes.get(x).setNote("K");
+    	}
+    	
+    	nc = new noteCircle(62);
+    	for(fallingLetters fL : notes)
+    	{
+    		nc.enqueue(fL);
     	}
     	
     	double CONCERT_C = 261.63;
@@ -53,7 +108,20 @@ public class GuitarHeroLite {
 
         final double TEXT_POS_X = .5;
         final double TEXT_POS_Y = .5;
-        
+        StdDraw.text(.5, .5, "Press enter to start!");
+        /*
+        while(true)
+        {
+        	if(StdDraw.hasNextKeyTyped()) 
+        	{
+        		int key = StdDraw.nextKeyTyped();
+        		if(key == 13)
+        		{
+        			
+        		}
+        	}
+        }
+        */
         stairWayToHeaven();
         play(stringA, stringAF, stringB, stringBF, stringC, stringCS, stringD, stringEF, stringE, stringF, stringFS, stringG, stringC_UP);
     }
@@ -121,15 +189,15 @@ public class GuitarHeroLite {
         
     }
     
-    private static void stairWayToHeaven() throws FileNotFoundException
+    private static void stairWayToHeaven()
     {
-    	if(count == notes.length)
+    	if(count == notes.size())
     	{
     		count = 0;
     	}
     	
     	StdDraw.clear();
-    	StdDraw.text(.5, .5, notes[count]);
+    	StdDraw.text(.5, .5, notes.get(count).getNote());
     	count++;
     }
 
