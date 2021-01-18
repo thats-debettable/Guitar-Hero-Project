@@ -24,9 +24,11 @@ public class fallingLetters {
 		note = n;
 	}
 	
-	public boolean fall()
+	public boolean fall() throws InterruptedException
 	{
+		StdDraw.text(x, y, note);
 		y -= .05;
+		Thread.sleep(30);
 		return(y <= .025);
 	}
 		
