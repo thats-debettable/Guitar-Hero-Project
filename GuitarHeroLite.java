@@ -14,7 +14,7 @@ public class GuitarHeroLite {
 	static Map<String, Double> loc;
 	static int count = 0;
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 
         // Create two guitar strings, for concert A and C
     	loc = new HashMap<>();
@@ -33,6 +33,7 @@ public class GuitarHeroLite {
     	loc.put("C", 1.0);
     	
     	notes = new ArrayList<>();
+    	nc = new noteCircle(100);
     	Scanner file = new Scanner(new File("swth.in"));
     	while(file.hasNext())
     	{
@@ -69,12 +70,6 @@ public class GuitarHeroLite {
     			notes.get(x).setNote("J");
     		if(temp.equals("CUP"))
     			notes.get(x).setNote("K");
-    	}
-    	
-    	nc = new noteCircle(62);
-    	for(fallingLetters fL : notes)
-    	{
-    		nc.enqueue(fL);
     	}
     	
     	double CONCERT_C = 261.63;
@@ -122,11 +117,10 @@ public class GuitarHeroLite {
         	}
         }
         */
-        stairWayToHeaven();
         play(stringA, stringAF, stringB, stringBF, stringC, stringCS, stringD, stringEF, stringE, stringF, stringFS, stringG, stringC_UP);
     }
     
-    private static void play(GuitarString stringA, GuitarString stringAF, GuitarString stringB, GuitarString stringBF, GuitarString stringC, GuitarString stringCS, GuitarString stringD, GuitarString stringEF, GuitarString stringE, GuitarString stringF, GuitarString stringFS, GuitarString stringG, GuitarString stringC_UP) throws FileNotFoundException {        // the main input loop
+    private static void play(GuitarString stringA, GuitarString stringAF, GuitarString stringB, GuitarString stringBF, GuitarString stringC, GuitarString stringCS, GuitarString stringD, GuitarString stringEF, GuitarString stringE, GuitarString stringF, GuitarString stringFS, GuitarString stringG, GuitarString stringC_UP) throws FileNotFoundException, InterruptedException {        // the main input loop
         while (true) {
             
             // check if the user has typed a key, and, if so, process it
@@ -162,7 +156,6 @@ public class GuitarHeroLite {
                     stringB.pluck();
                 else if (key == 'k') 
                     stringC_UP.pluck();
-                stairWayToHeaven();
             }
 
             // compute the superposition of the samples
@@ -189,16 +182,12 @@ public class GuitarHeroLite {
         
     }
     
-    private static void stairWayToHeaven()
+    private static void ohGodImFalling(fallingLetters fuck) throws InterruptedException
     {
-    	if(count == notes.size())
+    	while(true)
     	{
-    		count = 0;
+    		fuck.fall();
     	}
-    	
-    	StdDraw.clear();
-    	StdDraw.text(.5, .5, notes.get(count).getNote());
-    	count++;
     }
 
 }
